@@ -844,3 +844,48 @@ function library.new(windowName: string, windowId: string): Window
 end
 
 return library
+
+local myWindow = library.new('My Awesome UI', 'MyGameUI')
+
+local mainTab = myWindow.new_tab('rbxassetid://4483345998')
+local settingsTab = myWindow.new_tab('rbxassetid://6034177579')
+
+local gameplaySection = mainTab.new_section('Gameplay Controls')
+local characterSection = mainTab.new_section('Character Options')
+
+local audioSection = settingsTab.new_section('Audio Settings')
+local displaySection = settingsTab.new_section('Display Preferences')
+
+local leftControls = gameplaySection.new_sector('Movement', 'Left')
+local rightControls = gameplaySection.new_sector('Actions', 'Right')
+
+local jumpButton = leftControls.element('Button', 'Jump!', nil, function()
+    print("Jump button clicked!")
+end)
+
+local runToggle = leftControls.element('Toggle', 'Toggle Run', false, function(value)
+    print("Run Toggled:", value.ToggleRun)
+end)
+runToggle:add_color({Color = Color3.fromRGB(0, 150, 255)}, nil, function(colorInfo)
+    print("Run toggle color changed to:", colorInfo.Color)
+end)
+
+local difficultyDropdown = rightControls.element('Dropdown', 'Difficulty', {options = {'Easy', 'Normal', 'Hard', 'Expert'}}, function(value)
+    print("Difficulty selected:", value.Difficulty)
+end)
+
+local musicVolumeSlider = audioSection.new_sector('Volume Sliders', 'Left').element('Slider', 'Music Volume', {default = {min = 0, max = 1, default = 0.7}}, function(value)
+    print("Music Volume:", value.MusicVolume)
+end)
+
+local sfxVolumeSlider = audioSection.new_sector('Volume Sliders', 'Right').element('Slider', 'SFX Volume', {default = {min = 0, max = 1, default = 0.8}}, function(value)
+    print("SFX Volume:", value.SFXVolume)
+end)
+
+local specialAbilities = characterSection.new_sector('Abilities', 'Left').element('Combo', 'Special Abilities', {options = {'Flight', 'Invisibility', 'Super Strength', 'Teleportation'}}, function(value)
+    print("Selected Abilities:")
+    for _, ability in ipairs(value.SpecialAbilities) do
+        print("- " .. ability)
+    end
+end)
+
